@@ -8,7 +8,7 @@ $.getJSON("/articles", function(data) {
       "<div class='card'>" +
           "<h5 class='card-header'>" + data[i].title + "</h5>" +
           "<div class='card-body'>" + 
-            "<a href='" + data[i].link + "'>" + "<p class='card-text'>" + data[i].link + "</p></a> <br>" +
+            "<a href='" + data[i].link + "' target='blank'>" + "<p class='card-text'>" + data[i].link + "</p></a> <br>" +
               "<a href='#' id='save-btn' data-id='" + data[i]._id + "'class='btn btn-primary'>SAVE ARTICLE</a>" +
           "</div>" +
       "</div>"
@@ -61,7 +61,9 @@ $.getJSON("/saved", function(data) {
           "<h5 class='card-header'>" + data[i].title + "</h5>" +
           "<div class='card-body'>" + 
               "<a href='" + data[i].link + "'>" + "<p class='card-text'>" + data[i].link + "</p></a> <br>" +
-              "<a href='#' id='view-notes-btn' data-id='" + data[i]._id + "'class='btn btn-primary'>ARTICLE NOTES</a>" +
+              '<button type="button" id="view-notes-btn" class="btn btn-primary" data-id="' + data[i]._id + '"' + 'data-toggle="modal" data-target="#exampleModal">' +
+                'VIEW NOTES' + 
+              '</button>'+
               "<a href='#' id='unsave-btn' data-id='" + data[i]._id + "'class='btn btn-danger'>DELETE FROM SAVED</a>" +
           "</div>" +
       "</div>"
@@ -85,13 +87,14 @@ $(document).on("click", "#unsave-btn", function() {
     })
 })
 
+// Whenever someone clicks view notes 
+$(document).on("click", "#view-notes-btn", function() {
 
+  // Empty the article title and note body
+  $("#modal-title").empty();
+  $("#note-modal").empty();
 
-// Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
-  // Empty the notes from the note section
-  $("#notes").empty();
-  // Save the id from the p tag
+  // Save the article id from the button
   var thisId = $(this).attr("data-id");
 
   // Now make an ajax call for the Article
@@ -103,13 +106,20 @@ $(document).on("click", "p", function() {
     .then(function(data) {
       console.log(data);
       // The title of the article
-      $("#notes").append("<h2>" + data.title + "</h2>");
+      $("#modal-title").append("<h5>" + data.title + "</h5>");
+
+      // Display previous notes
+      // $("#note-modal").append("<p id='previous-notes'></p>")
+
       // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' >");
+      // $("#note-modal").append("<input id='titleinput' name='title' >");
+
       // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+      $("#note-modal").append("New Note");
+      $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
+
       // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
       // If there's a note in the article
       if (data.note) {
@@ -131,8 +141,10 @@ $(document).on("click", "#savenote", function() {
     method: "POST",
     url: "/articles/" + thisId,
     data: {
+
       // Value taken from title input
-      title: $("#titleinput").val(),
+      // title: $("#titleinput").val(),
+
       // Value taken from note textarea
       body: $("#bodyinput").val()
     }
@@ -145,8 +157,7 @@ $(document).on("click", "#savenote", function() {
       $("#notes").empty();
     });
 
-  // Also, remove the values entered in the input and textarea for note entry
-  $("#titleinput").val("");
+  // Also, remove the values entered in the textarea for note entry
   $("#bodyinput").val("");
 });
 

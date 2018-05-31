@@ -125,7 +125,7 @@ db.Article.update({ _id: req.params.id }, { saved_status: false })
 
 
 // Route for grabbing a saved Article by id, populate it with it's note
-app.get("/articles/notes/:id", function(req, res) {
+app.get("/articles/:id", function(req, res) {
 // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
 db.Article.findOne({ _id: req.params.id })
     // ..and populate all of the notes associated with it
@@ -141,7 +141,7 @@ db.Article.findOne({ _id: req.params.id })
 });
 
 // Route for saving/updating a saved Article's associated Note
-app.post("/articles/notes/:id", function(req, res) {
+app.post("/articles/:id", function(req, res) {
 // Create a new note and pass the req.body to the entry
 db.Note.create(req.body)
     .then(function(dbNote) {

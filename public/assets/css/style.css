@@ -23,7 +23,12 @@ body { background-color: #fff; }
 textarea, input {
   display: block;
   width: 100%;
-  background-color: #FCF5C7;
+  /* background-color: #FCF5C7; */
+  background-color: #fff;
+}
+#bodyinput {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 input {
   height: 36px;
