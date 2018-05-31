@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+      
+    <meta charset="UTF-8">
+    <title>Scraping With Mongoose</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+
+    </head>
+  <body>
+
+    <!-- Nav -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Mongo Scraper</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/saved.html">Saved Articles</a>
+                </li>
+            </ul>
+            <btn id="scrape" class="btn btn-primary">SCRAPE NEW ARTICLES</btn>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4 text-center">Mongo Scraper</h1>
+            <p class="lead text-center">NPR EDITION</p>
+        </div>
+    </div>
+
+    <!-- Articles display -->
+    <div id="wrapper">
+      <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" id="articles"></div>
+            <div class="col-sm-1"></div>
+            <!-- <div id="notes"></div> -->
+      </div>
+    </div>
+
+    <!-- Modal: Scrape complete -->
+    <div id="scraped-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+                <div class="modal-body">
+                    <p>Added 20 new articles!</p>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>
