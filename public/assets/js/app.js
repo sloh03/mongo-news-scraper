@@ -1,4 +1,4 @@
-// Grab the unsaved articles as a json, display on page load
+// Grab the unsaved articles as a json, display on home page load
 $.getJSON("/articles", function(data) {
   // For each one
   for (var i = 0; i < 20; i++) {
@@ -23,7 +23,7 @@ $(document).on("click", "#scrape", function() {
     method: "GET",
     url: "/scrape",
     success: function () {
-        // Show the success modal,
+        // Show the success modal
         $('#results-modal').modal('show'); // *** Modal not showing ***
       }
   })
@@ -68,6 +68,24 @@ $.getJSON("/saved", function(data) {
     )
   }
 });
+
+// Whenever someone clicks unsave article
+$(document).on("click", "#unsave-btn", function() {
+  event.preventDefault();
+  // Grab the article's id
+  var thisId = $(this).attr("data-id");
+  // Make an ajax call to unsave the article
+  $.ajax({
+    method: "PUT",
+    url: "/unsaved/" + thisId
+  })
+    .then(function() {
+      console.log("Article has been unsaved");
+      location.reload();
+    })
+})
+
+
 
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
