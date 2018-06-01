@@ -1,8 +1,8 @@
-// Grab the unsaved articles as a json, display on home page load
+// Display articles on 'Home' page load
 $.getJSON("/articles", function(data) {
-  // For each one
-  for (var i = 0; i < 20; i++) {
-    // Display the apropos information on the page
+
+    // Display 20 scraped articles in cards
+    for (var i = 0; i < 20; i++) {
     $("#articles").append(
       "<p data-id='" + data[i]._id + "'>" +
       "<div class='card'>" +
@@ -16,28 +16,35 @@ $.getJSON("/articles", function(data) {
   }
 });
 
-// Whenever someone clicks 'Scrape' button
+// Scrape button
 $(document).on("click", "#scrape", function() {
+
   // Make an ajax call to Scrape
   $.ajax({
     method: "GET",
     url: "/scrape",
     success: function () {
-        // Show the success modal
-        $('#results-modal').modal('show'); // *** Modal not showing ***
-      }
+
+      // Show the success modal
+      $('#results-modal').modal('show'); // *** Modal not showing ***
+    }
   })
-    // Then display articles on page
+    // Then, display articles on page
     .then(function(data) {
-      window.location.reload()
+
+      $(document).on("click", ".exit", function() {
+        window.location.reload()
+      })
     });
 })
 
-// Whenever someone clicks save article
+// Save article button
 $(document).on("click", "#save-btn", function() {
   event.preventDefault();
+
   // Grab the article's id
   var thisId = $(this).attr("data-id");
+
   // Make an ajax call to save the Article
   $.ajax({
     method: "PUT",
@@ -49,11 +56,11 @@ $(document).on("click", "#save-btn", function() {
     })
 })
 
-// Grab the saved articles as a json, display on page load
+// Display saved articles on 'Saved' page load
 $.getJSON("/saved", function(data) {
-  // For each one
+
+  // Display all saved articles in cards
   for (var i = 0; i < data.length; i++) {
-    // Display the apropos information on the page
     $("#saved-articles").append(
       "<p data-id='" + data[i]._id + "'>" +
       "<div class='card'>" +
@@ -70,11 +77,13 @@ $.getJSON("/saved", function(data) {
   }
 });
 
-// Whenever someone clicks unsave article
+// Unsave article button
 $(document).on("click", "#unsave-btn", function() {
   event.preventDefault();
+
   // Grab the article's id
   var thisId = $(this).attr("data-id");
+
   // Make an ajax call to unsave the article
   $.ajax({
     method: "PUT",
@@ -86,91 +95,92 @@ $(document).on("click", "#unsave-btn", function() {
     })
 })
 
-// Whenever someone clicks view notes 
-$(document).on("click", "#view-notes-btn", function() {
+var articleId;
 
-  // Empty the article title and note body
+// View notes button
+$(document).on("click", "#view-notes-btn", function() {
+  // Save the article id from the button
+  var articleId = $(this).attr("data-id");
+  modalContent(articleId);
+});
+
+function modalContent(articleId) {
+
+  // Empty the modal -- article title and note body
   $("#modal-title").empty();
   $("#note-modal").empty();
 
-  // Save the article id from the button
-  var thisId = $(this).attr("data-id");
+  // // Save the article id from the button
+  // var thisId = $(this).attr("data-id");
 
-  // Now make an ajax call for the Article
+  // Ajax call for the article
   $.ajax({
     method: "GET",
-    url: "/articles/" + thisId
+    url: "/articles/" + articleId
   })
-    // With that done, add the note information to the page
-    .then(function(data) {
-      // console.log(data);
+  // Then, add the note information to the page
+  .then(function(data) {
 
-      // The title of the article
-      $("#modal-title").append("<h5>" + data.title + "</h5>");
+    // The title of the article
+    $("#modal-title").append("<h5>" + data.title + "</h5>");
 
-      // Display previous notes, if any
-      if (data.note) {
-      // if (data.notes) {
+    // Display note, if any
+    if (data.note) {
 
-        // Add title of section: Note
-        $("#note-modal").append("Note");
+      // Add title of section: Note
+      $("#note-modal").append("Note");
 
-        // Display all notes
-        // for (i=0; i<data.notes.length; i++) {
-          $("#note-modal").append(
-            '<div class="card">' +
-              '<div class="card-body">' + 
-                data.note.body + 
-                // data.notes.body + 
-                '<div class="float-right">' +
-                  "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
-                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data.note._id + "' id='delete-note-btn'>X</button>" +
-                '</div>' +
+      // Display note body
+        $("#note-modal").append(
+          '<div class="card">' +
+            '<div class="card-body">' + 
+              data.note.body + 
+              '<div class="float-right">' +
+                "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
+                "<button type='button' class='btn btn-danger btn-sm' data-id-note='" + data.note._id + "' id='delete-note-btn'>X</button>" +
               '</div>' +
-            '</div>'
-          );
-        // }
-      }
-      else {
-        // Display no notes message
-        $("#note-modal").append("No notes for this article yet.<br><br>");
+            '</div>' +
+          '</div>'
+        );
+    }
+    else {
 
-        // Display textarea to add a new note body
-        $("#note-modal").append("Add Note");
-        $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
+      // Display no notes message
+      $("#note-modal").append("No notes for this article yet.<br><br>");
 
-        // Display button to submit a new note, with the id of the article saved to it
-        $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      // Display textarea to add a new note body
+      $("#note-modal").append("Add Note");
+      $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
 
-      }
-
-    });
-});
+      // Display button to submit a new note, with the id of the article saved to it
+      $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+    }
+  });
+}
 
 // Edit note button
 $(document).on("click", "#edit-note-btn", function() {
-  // Grab the id associated with the article from the edit button
+
+  // Grab the article id from the edit button
   var thisId = $(this).attr("data-id");
 
-  // Now make an ajax call for the Article
+  // Now make an ajax call for the article
   $.ajax({
     method: "GET",
     url: "/articles/" + thisId
   })
-    // With that done, add the note information to the page
+    // Add the note information to the modal
     .then(function(data) {
-      // console.log(data);
 
-      // A textarea to add a new note body
+      // Add title and textarea to add a new note body
       $("#note-modal").append("Edit Note");
       $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
 
       // A button to submit a new note, with the id of the article saved to it
       $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
-      // If there's a note in the article
+      // Place the body of the note in the body textarea
       if (data.note) {
-        // Place the body of the note in the body textarea
         $("#bodyinput").val(data.note.body);
       }
     })
@@ -195,47 +205,39 @@ $(document).on("click", "#savenote", function() {
     // With that done
     .then(function(data) {
 
-      // Log the response
-      // console.log(data);
-
-      // Empty the notes section
-      // $("#notes").empty();
-
       // Empty the note body
       $("#note-modal").empty();
 
       // Grab the id associated with the article from the submit button
-      // var thisId = $(this).attr("data-id");
       var thisId = data._id;
 
-      // Now make an ajax call for the Article
+      // Make an ajax call for the article
       $.ajax({
         method: "GET",
         url: "/articles/" + thisId
       })
-        // With that done, add the note information to the page
+        // Then, add the note information to the modal
         .then(function(data) {
 
           // Add title of section: Note
           $("#note-modal").append("Note");
 
-          // Display note in notes section
+          // Display note body
           $("#note-modal").append(
             '<div class="card">' +
               '<div class="card-body">' + 
                 data.note.body + 
                 '<div class="float-right">' +
                   "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
-                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data.note._id + "' id='delete-note-btn'>X</button>" +
+                  "<button type='button' class='btn btn-danger btn-sm' data-id-note='" + data.note._id + "' data-id='" + data._id + "' id='delete-note-btn'>X</button>" +
                 '</div>' +
               '</div>' +
             '</div>'
           );
-
         });
-
-          // Also, remove the values entered in the textarea for note entry
-          $("#bodyinput").val("");
+        
+        // Remove the values entered in the textarea for note entry
+        $("#bodyinput").val("");
     });
 
 })
@@ -243,35 +245,20 @@ $(document).on("click", "#savenote", function() {
 // Delete note button
 $(document).on("click", "#delete-note-btn", function() {
 
-  // Grab the id associated with the article from the submit button
-  var thisId = $(this).attr("data-id");
+  // Grab the id associated with the note from the X button
+  var thisId = $(this).attr("data-id-note");
 
-  // Make an ajax call for the Article
+  // Make an ajax call for the note
   $.ajax({
     method: "DELETE",
-    url: "/articles/" + thisId
+    url: "/note/" + thisId
   })
-    // With that done, add the note information to the page
-    .then(function(data) {
 
-      if (!data.note) {
+  // Save the article id from the button
+  var articleId = $(this).attr("data-id");
 
-        // Empty the article title and note body
-        $("#note-modal").empty();
-
-        // Display no notes message
-        $("#note-modal").append("No notes for this article yet.<br><br>");
-
-        // Display textarea to add a new note body
-        $("#note-modal").append("Add Note");
-        $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
-
-        // Display button to submit a new note, with the id of the article saved to it
-        $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
-      }
-      
-      // location.reload();
-    })
+  // Empty the modal
+  modalContent(articleId);
 })
 
 
