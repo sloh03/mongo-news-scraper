@@ -29,7 +29,6 @@ $(document).on("click", "#scrape", function() {
   })
     // Then display articles on page
     .then(function(data) {
-      console.log(res);
       window.location.reload()
     });
 })
@@ -125,7 +124,7 @@ $(document).on("click", "#view-notes-btn", function() {
                 // data.notes.body + 
                 '<div class="float-right">' +
                   "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
-                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data._id + "' id='delete-note-btn'>X</button>" +
+                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data.note._id + "' id='delete-note-btn'>X</button>" +
                 '</div>' +
               '</div>' +
             '</div>'
@@ -227,7 +226,7 @@ $(document).on("click", "#savenote", function() {
                 data.note.body + 
                 '<div class="float-right">' +
                   "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
-                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data._id + "' id='delete-note-btn'>X</button>" +
+                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data.note._id + "' id='delete-note-btn'>X</button>" +
                 '</div>' +
               '</div>' +
             '</div>'
@@ -256,6 +255,10 @@ $(document).on("click", "#delete-note-btn", function() {
     .then(function(data) {
 
       if (!data.note) {
+
+        // Empty the article title and note body
+        $("#note-modal").empty();
+
         // Display no notes message
         $("#note-modal").append("No notes for this article yet.<br><br>");
 
