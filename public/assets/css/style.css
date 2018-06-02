@@ -1,8 +1,17 @@
 body { background-color: #fff; }
 
 .jumbotron {
-  background-color: #e9ecef;
+  /* background-color: #e9ecef; */
+  background-color: #2471A3;
+  height: 100px;  
 }
+.jumbotron h1{
+  color: #fff;
+}
+.jumbotron p{
+  color: #fff;
+}
+
 #wrapper {
   width: 960px;
   margin-left: auto;
