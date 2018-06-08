@@ -1,15 +1,15 @@
 // Display articles on 'Home' page load
 $.getJSON("/articles", function(data) {
-
+    let page = 1;
     // Display 20 scraped articles in cards
-    for (var i = 0; i < 20; i++) {
+    for (var i = 20*(page-1); i < 20*page; i++) {
     $("#articles").append(
       "<p data-id='" + data[i]._id + "'>" +
       "<div class='card'>" +
           "<h5 class='card-header'>" + data[i].title + "</h5>" +
           "<div class='card-body'>" + 
             "<a href='" + data[i].link + "' target='blank'>" + "<p class='card-text'>" + data[i].link + "</p></a> <br>" +
-              "<a href='#' id='save-btn' data-id='" + data[i]._id + "'class='btn btn-primary'>SAVE ARTICLE</a>" +
+              "<a href='#' id='save-btn' data-id='" + data[i]._id + "'class='btn btn-danger'>SAVE ARTICLE</a>" +
           "</div>" +
       "</div>"
     )
@@ -67,10 +67,10 @@ $.getJSON("/saved", function(data) {
           "<h5 class='card-header'>" + data[i].title + "</h5>" +
           "<div class='card-body'>" + 
               "<a href='" + data[i].link + "'>" + "<p class='card-text'>" + data[i].link + "</p></a> <br>" +
-              '<button type="button" id="view-notes-btn" class="btn btn-primary" data-id="' + data[i]._id + '"' + 'data-toggle="modal" data-target="#exampleModal">' +
+              '<button type="button" id="view-notes-btn" class="btn btn-danger" data-id="' + data[i]._id + '"' + 'data-toggle="modal" data-target="#exampleModal">' +
                 'VIEW NOTES' + 
               '</button>'+
-              "<a href='#' id='unsave-btn' data-id='" + data[i]._id + "'class='btn btn-danger'>DELETE FROM SAVED</a>" +
+              "<a href='#' id='unsave-btn' data-id='" + data[i]._id + "'class='btn btn-dark'>DELETE FROM SAVED</a>" +
           "</div>" +
       "</div>"
     )
@@ -136,8 +136,8 @@ function modalContent(articleId) {
             '<div class="card-body">' + 
               data.note.body + 
               '<div class="float-right">' +
-                "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
-                "<button type='button' class='btn btn-danger btn-sm' data-id-note='" + data.note._id + "' id='delete-note-btn'>X</button>" +
+                "<button type='button' class='btn btn-danger btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
+                "<button type='button' class='btn btn-dark btn-sm' data-id-note='" + data.note._id + "' id='delete-note-btn'>X</button>" +
               '</div>' +
             '</div>' +
           '</div>'
@@ -153,7 +153,7 @@ function modalContent(articleId) {
       $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
 
       // Display button to submit a new note, with the id of the article saved to it
-      $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      $("#note-modal").append("<button type='button' class='btn btn-danger btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
     }
   });
 }
@@ -177,7 +177,7 @@ $(document).on("click", "#edit-note-btn", function() {
       $("#note-modal").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
 
       // A button to submit a new note, with the id of the article saved to it
-      $("#note-modal").append("<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      $("#note-modal").append("<button type='button' class='btn btn-danger btn-sm' data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
       // Place the body of the note in the body textarea
       if (data.note) {
@@ -228,8 +228,8 @@ $(document).on("click", "#savenote", function() {
               '<div class="card-body">' + 
                 data.note.body + 
                 '<div class="float-right">' +
-                  "<button type='button' class='btn btn-primary btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
-                  "<button type='button' class='btn btn-danger btn-sm' data-id-note='" + data.note._id + "' data-id='" + data._id + "' id='delete-note-btn'>X</button>" +
+                  "<button type='button' class='btn btn-danger btn-sm' data-id='" + data._id + "' id='edit-note-btn'>Edit</button>" +
+                  "<button type='button' class='btn btn-dark btn-sm' data-id-note='" + data.note._id + "' data-id='" + data._id + "' id='delete-note-btn'>X</button>" +
                 '</div>' +
               '</div>' +
             '</div>'

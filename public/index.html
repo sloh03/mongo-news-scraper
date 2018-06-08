@@ -13,12 +13,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
 
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400" rel="stylesheet">
+
     </head>
   <body>
 
     <!-- Nav -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mongo Scraper</a>
+        <a class="navbar-brand" href="/index.html">Mongo News Scraper</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -32,16 +36,17 @@
                     <a class="nav-link" href="/saved.html">Saved Articles</a>
                 </li>
             </ul>
-            <!-- <btn id="scrape" class="btn btn-primary">SCRAPE NEW ARTICLES</btn> -->
-            <button type="button" id="scrape" class="btn btn-primary" data-toggle="modal" data-target="#scraped-modal">SCRAPE NEW ARTICLES</button>
         </div>
     </nav>
 
     <!-- Jumbotron -->
     <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4 text-center">Mongo Scraper</h1>
-            <p class="lead text-center">NPR EDITION</p>
+        <div class="container text-center">
+            <h1 class="display-4">Breaking News</h1>
+            <p class="lead">NPR EDITION</p>
+            <br>
+            <!-- <btn id="scrape" class="btn btn-primary">SCRAPE NEW ARTICLES</btn> -->
+            <button type="button" id="scrape" class="btn btn-danger" data-toggle="modal" data-target="#scraped-modal">SCRAPE NEW ARTICLES</button>
         </div>
     </div>
 
